@@ -1,7 +1,0 @@
-bundler	bundler.txt	/*bundler*
-bundler-:Bundle	bundler.txt	/*bundler-:Bundle*
-bundler-about	bundler.txt	/*bundler-about*
-bundler-author	bundler.txt	/*bundler-author*
-bundler-commands	bundler.txt	/*bundler-commands*
-bundler-mappings	bundler.txt	/*bundler-mappings*
-bundler.txt	bundler.txt	/*bundler.txt*
