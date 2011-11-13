@@ -1,0 +1,6 @@
+My ~/.vimrc files and vim files (most of which will be loaded with VAM from the ~/.vimrc but I am keeping a backup regardless.
+
+I'm hoping people will find it useful! It's mostly used for ruby editing.
+
+Simply copy the .vimrc to ~/.vimrc and load up any file with vim (vim ~/tester.rb) and the plugins should be instantly installed using VAM (Great work by MarcWeber)
+
