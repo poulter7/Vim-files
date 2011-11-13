@@ -1,11 +1,8 @@
-"In some linux distros.
-" see http://www.adamlowe.me/2009/12/vim-destroys-all-other-rails-editors.html
-
+"Alans ~/.vimrc script, uses VAM (thanks MarcWeber) to handle all plugins!
 set nocompatible
 filetype indent plugin on | syn on
 set hidden
 
-"
 " let's copy paste some lines from documentation
 fun SetupVAM()
     let addons_base = expand('$HOME') . '/.vim/vim-addons'
@@ -17,16 +14,16 @@ fun SetupVAM()
 
     let g:vim_addon_manager = {}
     let g:vim_addon_manager['plugin_sources'] = {}
-    "let g:vim_addon_manager['plugin_sources']['snippets'] = { 'type' : 'git', 'url': 'git://github.com/scrooloose/snipmate-snippets.git' }
     let g:vim_addon_manager['plugin_sources']['snippets'] = { 'type' : 'git', 'url': 'git://github.com/alansaul/snipmate-snippets.git' }
+    "let g:vim_addon_manager['plugin_sources']['snippets'] = { 'type' : 'git', 'url': 'git://github.com/scrooloose/snipmate-snippets.git' } << Using my snippets for now as scroolooses has the wrong directory structure to work with upstream VAM, also mine includes lazily loading functions
 
-    call vam#ActivateAddons(['Solarized', 'blackboard', 'desert256', 'molokai', 'wombat256', 'Railscasts_Theme_GUI256color', 'xoria256', 'Syntastic', 'javacomplete', 'project.tar.gz', 'AutoTag', 'The_NERD_tree', 'pyflakes2441', 'taglist', 'FuzzyFinder', 'endwise', 'surround', 'pep82914', 'rails', 'bundler', 'SuperTab', 'TaskList', 'pydoc910', 'rvm', 'vcscommand', 'snipmate', 'snippets'], {'auto_install' : 0})
+    call vam#ActivateAddons(['Solarized', 'blackboard', 'desert256', 'molokai', 'wombat256', 'Railscasts_Theme_GUI256color', 'xoria256', 'Syntastic', 'javacomplete', 'project.tar.gz', 'AutoTag', 'The_NERD_tree', 'pyflakes2441', 'taglist', 'FuzzyFinder', 'endwise', 'surround', 'pep82914', 'rails', 'bundler', 'SuperTab', 'TaskList', 'pydoc910', 'rvm', 'snipmate', 'snippets', 'vcscommand'], {'auto_install' : 0})
 
 endf
 call SetupVAM()
 
 
-"set nocompatible
+" Now use VAM so no need for thses
 "filetype off
 "call pathogen#helptags()
 "call pathogen#runtime_append_all_bundles()
@@ -164,10 +161,6 @@ let g:SuperTabDefaultCompletionType = "context"
 " Type \8 to check that python syntax complies with standard requirements
 let g:pep8_map='<leader>8'
 
-"PYDICTION
-" Setup pydiction locationn
-" let g:pydiction_location = '~/.vim/bundle/pydiction/complete-dict' 
-
 "PROJECT
 " Add recently accessed projects menu (project plugin)
 set viminfo^=!
@@ -219,7 +212,6 @@ let g:snipMate['scope_aliases'] = get(g:snipMate,'scope_aliases',
           \ ,'ruby': 'ruby,ruby-rails,ruby-rspec,ruby-shoulda,ruby-factorygirl'
           \ } )
     
-"source g:vim_addon_manager.plugin_root_dir + snippets/support_functions.vim
 "source ~/.vim/vim-addons/snippets/support_functions.vim
 
 " }
@@ -235,16 +227,6 @@ au BufRead,BufNewFile *.rb,*.rhtml set softtabstop=2
 "If its an erb file, give html and ruby snippets
 au BufNewFile,BufRead *.html.erb set filetype=eruby.html
 "au BufNewFile,BufRead *.rb set filetype=ruby.ruby-rails.ruby-rspec.ruby-shoulda.ruby-factorygirl
-
-" Adding ruby completion??
-" Turn on language specific omnifuncs
-"au FileType ruby,eruby set omnifunc=rubycomplete#Complete
-"au FileType ruby,eruby let g:rubycomplete_buffer_loading = 1
-"au FileType ruby,eruby let g:rubycomplete_rails = 1
-"au FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
-"au FileType ruby,eruby let g:rubycomplete_include_object = 1
-"au FileType ruby,eruby let g:rubycomplete_include_objectspace = 1
-" }
 
 " If you prefer the Omni-Completion tip window to close when a selection is
 " made, these lines close it on movement in insert mode or when leaving
@@ -279,7 +261,8 @@ nmap <CR> O<ESC>j
 "Remap increment number from <C-A> (which is used in screen) to <C-I>
 nmap <C-I> <C-A>
 
-" DISABLE ARROW KEYS
+" DISABLE ARROW KEYS < Just comment this out if you wan't arrow keys to work
+" again
 " ==================
 "
 " Insert Mode
