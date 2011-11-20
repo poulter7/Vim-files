@@ -17,7 +17,7 @@ fun SetupVAM()
     let g:vim_addon_manager['plugin_sources']['snippets'] = { 'type' : 'git', 'url': 'git://github.com/alansaul/snipmate-snippets.git' }
     "let g:vim_addon_manager['plugin_sources']['snippets'] = { 'type' : 'git', 'url': 'git://github.com/scrooloose/snipmate-snippets.git' } << Using my snippets for now as scroolooses has the wrong directory structure to work with upstream VAM, also mine includes lazily loading functions
 
-    call vam#ActivateAddons(['Solarized', 'blackboard', 'desert256', 'molokai', 'wombat256', 'Railscasts_Theme_GUI256color', 'xoria256', 'Syntastic', 'javacomplete', 'project.tar.gz', 'AutoTag', 'The_NERD_tree', 'pyflakes2441', 'taglist', 'FuzzyFinder', 'endwise', 'surround', 'pep82914', 'rails', 'bundler', 'SuperTab', 'TaskList', 'pydoc910', 'rvm', 'snipmate', 'snippets', 'vcscommand'], {'auto_install' : 0})
+    call vam#ActivateAddons(['Solarized', 'blackboard', 'desert256', 'molokai', 'wombat256', 'Railscasts_Theme_GUI256color', 'xoria256', 'Syntastic', 'javacomplete', 'project.tar.gz', 'AutoTag', 'The_NERD_tree', 'pyflakes2441', 'taglist', 'FuzzyFinder', 'endwise', 'surround', 'pep82914', 'rails', 'bundler', 'SuperTab', 'TaskList', 'pydoc910', 'rvm', 'snipmate', 'snippets', 'vcscommand', 'AutoClose'], {'auto_install' : 0})
 
 endf
 call SetupVAM()
@@ -39,6 +39,11 @@ set shiftwidth=4
 set autoindent
 set expandtab
 
+" backup swap files etc
+set undodir=~/.vim/tmp/     " undo files
+set backupdir=~/.vim/tmp/ " backups
+set directory=~/.vim/tmp/   " swap files
+set backup                        " enable backups
 
 "set how many lines of history vim has to remember
 set history=1000
@@ -125,13 +130,45 @@ set completeopt+=longest,menu,preview
 "}
 
 "Plugin settings {
-"Syntastic
+"Syntastic (And status line, taken from Steve Losh
+augroup ft_statuslinecolor
+    au!
+
+    au InsertEnter * hi StatusLine ctermfg=196 guifg=#FF3145
+    au InsertLeave * hi StatusLine ctermfg=130 guifg=#CD5907
+augroup END
+
+set statusline=%f    " Path.
+set statusline+=%m   " Modified flag.
+set statusline+=%r   " Readonly flag.
+set statusline+=%w   " Preview window flag.
+
+set statusline+=\    " Space.
+
+set statusline+=%#redbar#                " Highlight the following as a warning.
+set statusline+=%{SyntasticStatuslineFlag()} " Syntastic errors.
+set statusline+=%*                           " Reset highlighting.
+
+set statusline+=%=   " Right align.
+
+" File format, encoding and type.  Ex: "(unix/utf-8/python)"
+set statusline+=(
+set statusline+=%{&ff}                        " Format (unix/DOS).
+set statusline+=/
+set statusline+=%{strlen(&fenc)?&fenc:&enc}   " Encoding (utf-8).
+set statusline+=/
+set statusline+=%{&ft}                        " Type (python).
+set statusline+=)
+
+" Line and column position and counts.
+set statusline+=\ (line\ %l\/%L,\ col\ %03c)
+
 set statusline+=%#warningmsg# "enable flags in status bar
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 let g:syntastic_enable_signs=1 "enable signs in side bar
-let g:syntastic_stl_format = '[%E{Err: %fe #%e}%B{, }%W{Warn: %fw #%w}]' "Add status line showing erros
 let g:syntastic_auto_loc_list=2
+"let g:syntastic_stl_format = '[%E{Err: %fe #%e}%B{, }%W{Warn: %fw #%w}]' "Add status line showing erros
 
 "TASK LIST
 " Toggle task list (type \td to see a list of TODO:'s etc"
@@ -191,6 +228,7 @@ set statusline+=%{rvm#statusline()}
 
 "VCSCommand
 map <leader>zc :VCSCommit<CR>
+match ErrorMsg '^\(<\|=\|>\)\{7\}\([^=].\+\)\?$'
 
 "Snipmate
 "function SnipPath ()
@@ -213,6 +251,9 @@ let g:snipMate['scope_aliases'] = get(g:snipMate,'scope_aliases',
           \ } )
     
 "source ~/.vim/vim-addons/snippets/support_functions.vim
+
+"Autoclose
+nmap <Leader>x <Plug>ToggleAutoCloseMappings
 
 " }
 
@@ -252,11 +293,40 @@ au InsertLeave * if pumvisible() == 0|pclose|endif
 "Set up map leader
 let mapleader = '\'
 
+" Fix D and Y
+nnoremap D d$
+nnoremap Y y$
+
+" Make it so j and k navigate up and down regardless of whether 2 lines is
+" actually 1!
+"nmap j gj
+"nmap k gk
+
+:command TODO :noautocmd vimgrep /TODO/jg **/* | copen
+:command FIXME :noautocmd vimgrep /FIXME/jg **/* | copen
+:command TODOrb :silent! noautocmd vimgrep /TODO/jg **/*.rb **/*.feature **/*.html **/*.haml **/*.scss **/*.css | copen
+:command FIXMErb :silent! noautocmd vimgrep /FIXME/jg **/*.rb **/*.feature **/*.html **/*.haml **/*.scss **/*.css |copen
+
+"Clear the quickfix (useful when you've done a TODOrb and want to get rid of
+"the results!)
+:command Clearqf :cex [] 
+
+" Escape remap! Finally committed
+inoremap jk <esc>
+
+" Easier buffer navigation
+noremap <C-h>  <C-w>h
+noremap <C-j>  <C-w>j
+noremap <C-k>  <C-w>k
+noremap <C-l>  <C-w>l
+
 " Command to run current script by typing ;e
 map ;p :w<CR>:exe ":!python " . getreg("%") . "" <CR>
 
 "Add a new line
 nmap <CR> O<ESC>j
+"But not for quickfix windows! (in qf the enter should go to the error!)
+autocmd FileType qf nnoremap <buffer> <CR> <CR> 
 
 "Remap increment number from <C-A> (which is used in screen) to <C-I>
 nmap <C-I> <C-A>
