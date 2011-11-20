@@ -305,7 +305,7 @@ nnoremap Y y$
 :command TODO :noautocmd vimgrep /TODO/jg **/* | copen
 :command FIXME :noautocmd vimgrep /FIXME/jg **/* | copen
 :command TODOrb :silent! noautocmd vimgrep /TODO/jg **/*.rb **/*.feature **/*.html **/*.haml **/*.scss **/*.css | copen
-:command FIXMErb :silent! noautocmd vimgrep /FIXME/jg **/*.rb **/*.feature **/*.html **/*.haml **/*.scss **/*.css |copen
+:command FIXMErb :silent! noautocmd vimgrep /FIXME/jg **/*.rb **/*.feature **/*.html **/*.haml **/*.scss **/*.css | copen
 
 "Clear the quickfix (useful when you've done a TODOrb and want to get rid of
 "the results!)
