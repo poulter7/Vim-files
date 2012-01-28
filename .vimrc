@@ -17,7 +17,7 @@ fun! SetupVAM()
     let g:vim_addon_manager['plugin_sources']['snippets'] = { 'type' : 'git', 'url': 'git://github.com/alansaul/snipmate-snippets.git' }
     "let g:vim_addon_manager['plugin_sources']['snippets'] = { 'type' : 'git', 'url': 'git://github.com/scrooloose/snipmate-snippets.git' } << Using my snippets for now as scroolooses has the wrong directory structure to work with upstream VAM, also mine includes lazily loading functions
 
-    call vam#ActivateAddons(['Solarized', 'blackboard', 'desert256', 'molokai', 'wombat256', 'Railscasts_Theme_GUI256color', 'xoria256', 'Syntastic', 'javacomplete', 'project.tar.gz', 'AutoTag', 'The_NERD_tree', 'pyflakes2441', 'taglist', 'FuzzyFinder', 'endwise', 'surround', 'pep8%2914', 'rails', 'bundler', 'SuperTab', 'TaskList', 'pydoc%910', 'vim-rvm', 'snipmate', 'snippets', 'vcscommand', 'AutoClose%1849'], {'auto_install' : 1})
+    call vam#ActivateAddons(['Solarized', 'blackboard', 'desert256', 'molokai', 'wombat256', 'Railscasts_Theme_GUI256color', 'xoria256', 'Syntastic', 'javacomplete', 'project.tar.gz', 'AutoTag', 'The_NERD_tree', 'pyflakes%2441', 'taglist', 'FuzzyFinder', 'endwise', 'surround', 'pep8%2914', 'rails', 'bundler', 'SuperTab', 'TaskList', 'pydoc%910', 'vim-rvm', 'snipmate', 'snippets', 'vcscommand', 'AutoClose%1849'], {'auto_install' : 1})
 
 endf
 call SetupVAM()
@@ -27,6 +27,11 @@ fun! SetupBACKUP()
     if !isdirectory(tmp_base)
         exec '!mkdir -p '.shellescape(tmp_base)
     endif
+    " backup swap files etc
+    set undodir=~/.vim/tmp/     " undo files
+    set backupdir=~/.vim/tmp/   " backups
+    set directory=~/.vim/tmp/   " swap files
+    set backup                        " enable backups
 endf
 call SetupBACKUP()
 
@@ -47,11 +52,6 @@ set shiftwidth=4
 set autoindent
 set expandtab
 
-" backup swap files etc
-set undodir=~/.vim/tmp/     " undo files
-set backupdir=~/.vim/tmp/   " backups
-set directory=~/.vim/tmp/   " swap files
-set backup                        " enable backups
 
 "set how many lines of history vim has to remember
 set history=1000
