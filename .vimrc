@@ -36,11 +36,6 @@ endf
 call SetupBACKUP()
 
 
-" Now use VAM so no need for thses
-"filetype off
-"call pathogen#helptags()
-"call pathogen#runtime_append_all_bundles()
-
 " General {
 " try to detect filetypes
 filetype on
@@ -97,9 +92,8 @@ syntax on
 set t_Co=256
 set showmatch
 set background=dark
-"let g:solarized_termcolors=256
+let g:solarized_termcolors=256
 "let g:solarized_visibility="low"
-"colorscheme solarized
 colorscheme solarized
 
 "Set up relative line numbering instead of absolute as its useful to perform
