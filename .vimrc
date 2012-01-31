@@ -22,13 +22,15 @@ fun! SetupVAM()
 endf
 call SetupVAM()
 
+" backup swap files etc
 fun! SetupBACKUP()
     let tmp_base = expand('$HOME') . '/.vim/tmp'
     if !isdirectory(tmp_base)
         exec '!mkdir -p '.shellescape(tmp_base)
     endif
-    " backup swap files etc
-    set undodir=~/.vim/tmp/     " undo files
+    if exists("&undodir")
+        set undodir=~/.vim/tmp/     " undo files
+    endif
     set backupdir=~/.vim/tmp/   " backups
     set directory=~/.vim/tmp/   " swap files
     set backup                        " enable backups
@@ -100,22 +102,21 @@ colorscheme solarized
 "actions to multiple lines
 "Make <C-N><C-N> toggle between line numberings relative absolute and none
 noremap <silent> <C-N><C-N> :call ToggleNumbers()<CR>
-set rnu
-
 func! ToggleNumbers()
-    if !exists('s:cur')
-        let s:cur = 0
+
+    "nu -> nonu -> rnu
+    if exists('rnu')
+        if &rnu == 1
+            set nu 
+        elseif &nu == 1
+            set nonu
+        else
+            set rnu 
+        endif
     else
-        let s:cur = (s:cur + 1) % 3
+        setl nu!
     endif
 
-    if s:cur == 0
-        set nu 
-    elseif &nu == 1
-        set nornu nonu
-    else
-        set rnu 
-    endif
 endfunc
 
 
